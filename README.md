@@ -1,5 +1,9 @@
 # Indigo View
 
+[![Build Status](https://travis-ci.org/hipnaba/indigo-html.svg?branch=master)](https://travis-ci.org/hipnaba/indigo-html.svg?branch=master)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/2994f47c98674986ad008011fe0a80ed)](https://www.codacy.com/app/hipnaba/indigo-view?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=hipnaba/indigo-view&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/2994f47c98674986ad008011fe0a80ed)](https://www.codacy.com/app/hipnaba/indigo-view?utm_source=github.com&utm_medium=referral&utm_content=hipnaba/indigo-view&utm_campaign=Badge_Coverage)
+
 Indigo View extends [Zend View](https://docs.zendframework.com/zend-view/).
 It simplifies integrations with non ZF projects and provides a set of
 generally useful view helpers.
