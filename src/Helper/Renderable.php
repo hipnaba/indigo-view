@@ -3,6 +3,7 @@ namespace Indigo\View\Helper;
 
 use Indigo\View\Exception;
 use Indigo\View\RenderableInterface;
+use Indigo\View\RenderableProxyInterface;
 
 /**
  * Renders a renderable object.
@@ -42,6 +43,10 @@ class Renderable extends AbstractHelper
     public function render(RenderableInterface $object)
     {
         $helperPlugin = $this->getHelperPlugin($object);
+
+        if ($object instanceof RenderableProxyInterface) {
+            $object = $object->getObjectToRender();
+        }
 
         return $helperPlugin($object);
     }

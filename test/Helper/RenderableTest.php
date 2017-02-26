@@ -70,4 +70,23 @@ class RenderableTest extends TestCase
 
         $this->assertEquals('my-helper', $helper($object));
     }
+
+    /**
+     * The helper should render the correct object for RenderableProxy
+     *
+     * @return void
+     */
+    public function testCorrectlyRendersRenderableProxyObjects()
+    {
+        $object = new \stdClass();
+        $object->prop = 'value';
+
+        $proxy = new Mock\RenderableProxy($object, function ($object) {
+            return $object->prop;
+        });
+
+        $helper = new Renderable();
+
+        $this->assertEquals('value', $helper($proxy));
+    }
 }
