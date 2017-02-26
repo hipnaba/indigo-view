@@ -11,7 +11,8 @@ generally useful view helpers.
 ## Renderable
 
 Any object can implement [RenderableInterface](src/RenderableInterface.php) and
-be rendered by the view helper plugin defined by the object itself.
+be rendered by the view helper plugin defined by the object itself. A helper
+plugin is provided to render such objects.
 
 The helper plugin can be any callable.
 
