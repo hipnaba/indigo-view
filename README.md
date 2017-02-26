@@ -31,7 +31,7 @@ echo $this->renderable($object);
 The above example will output
 
 ```html
-<h1>REnderableObject</h1>
+<h1>RenderableObject</h1>
 ```
 
 Or we can use the plugin name registered with the plugin manager.
