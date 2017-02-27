@@ -17,7 +17,7 @@ abstract class AbstractHelper extends BaseAbstractHelper
     /**
      * {@inheritdoc}
      *
-     * @return RendererInterface
+     * @return RendererInterface|PhpRenderer
      */
     public function getView()
     {

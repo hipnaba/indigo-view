@@ -6,7 +6,6 @@ use PHPUnit\Framework\TestCase;
 use Zend\ServiceManager\Factory\InvokableFactory;
 use Zend\View\Helper\HeadLink;
 use Zend\View\Renderer\JsonRenderer;
-use Zend\View\Renderer\PhpRenderer;
 use Zend\View\Renderer\RendererInterface;
 
 /**
@@ -19,6 +18,21 @@ use Zend\View\Renderer\RendererInterface;
 class AbstractHelperTest extends TestCase
 {
     /**
+     * Helpers will always have a renderer instance.
+     *
+     * @return void
+     */
+    public function testHelpersHaveDefaultRenderer()
+    {
+        $helper = new ConcreteHelper();
+        $renderer = $helper->getView();
+
+        $this->assertNotNull($renderer);
+        $this->assertInstanceOf(RendererInterface::class, $renderer);
+        $this->assertTrue(method_exists($renderer, 'plugin'), 'The default renderer must be pluggable.');
+    }
+
+    /**
      * GetHelperPlugin should return the helper if it's already callable
      *
      * @return void
@@ -26,7 +40,6 @@ class AbstractHelperTest extends TestCase
     public function testGetHelperPluginWillReturnHelperIfAlreadyCallable()
     {
         $helper = new ConcreteHelper();
-
         $plugin = function () {
         };
 
@@ -71,8 +84,6 @@ class AbstractHelperTest extends TestCase
     public function testGetHelperPluginWillReturnPlugins()
     {
         $helper = new ConcreteHelper();
-        $helper->setView(new PhpRenderer());
-
         $headLink = $helper->protectedGetHelperPlugin('headLink');
 
         $this->assertInstanceOf(HeadLink::class, $headLink);
@@ -85,31 +96,15 @@ class AbstractHelperTest extends TestCase
      */
     public function testGetHelperWillPassOptionsToHelperPlugins()
     {
-        $renderer = new PhpRenderer();
-        $helperManager = $renderer->getHelperPluginManager();
-        $helperManager->setFactory(ConcreteHelper::class, InvokableFactory::class);
-
         $helper = new ConcreteHelper();
-        $helper->setView($renderer);
+
+        $helperManager = $helper->getView()->getHelperPluginManager();
+        $helperManager->setFactory(ConcreteHelper::class, InvokableFactory::class);
 
         $options = ['param' => 'value'];
         $other = $helper->protectedGetHelperPlugin(ConcreteHelper::class, $options);
 
         $this->assertEmpty($helper->getOptions());
         $this->assertEquals($options, $other->getOptions());
-    }
-
-    /**
-     * Helpers will always have a renderer instance.
-     *
-     * @return void
-     */
-    public function testHelpersHaveDefaultRenderer()
-    {
-        $helper = new ConcreteHelper();
-        $renderer = $helper->getView();
-
-        $this->assertNotNull($renderer);
-        $this->assertInstanceOf(RendererInterface::class, $renderer);
     }
 }
