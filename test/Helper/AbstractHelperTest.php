@@ -7,6 +7,7 @@ use Zend\ServiceManager\Factory\InvokableFactory;
 use Zend\View\Helper\HeadLink;
 use Zend\View\Renderer\JsonRenderer;
 use Zend\View\Renderer\PhpRenderer;
+use Zend\View\Renderer\RendererInterface;
 
 /**
  * AbstractHelper tests.
@@ -45,19 +46,6 @@ class AbstractHelperTest extends TestCase
     {
         $helper = new ConcreteHelper();
         $helper->protectedGetHelperPlugin([]);
-    }
-
-    /**
-     * GetHelperPlugin will throw an exception if the renderer is not set.
-     *
-     * @return void
-     *
-     * @expectedException \RuntimeException
-     */
-    public function testGetHelperPluginWillThrowExceptionIfRendererNotSet()
-    {
-        $helper = new ConcreteHelper();
-        $helper->protectedGetHelperPlugin('some');
     }
 
     /**
@@ -109,5 +97,19 @@ class AbstractHelperTest extends TestCase
 
         $this->assertEmpty($helper->getOptions());
         $this->assertEquals($options, $other->getOptions());
+    }
+
+    /**
+     * Helpers will always have a renderer instance.
+     *
+     * @return void
+     */
+    public function testHelpersHaveDefaultRenderer()
+    {
+        $helper = new ConcreteHelper();
+        $renderer = $helper->getView();
+
+        $this->assertNotNull($renderer);
+        $this->assertInstanceOf(RendererInterface::class, $renderer);
     }
 }
