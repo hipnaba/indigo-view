@@ -7,7 +7,7 @@ use Zend\ServiceManager\Factory\InvokableFactory;
  * Provides configuration for Zend components.
  *
  * @package Indigo\View
- * @author  Danijel Fabijan <danijel.fabijan@bruckom.hr>
+ * @author  Danijel Fabijan <hipnaba@gmail.com>
  * @link    https://github.com/hipnaba/indigo-view
  */
 class ConfigProvider
