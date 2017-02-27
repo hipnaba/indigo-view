@@ -4,7 +4,7 @@ namespace Indigo\View;
 use Zend\ServiceManager\Factory\InvokableFactory;
 
 /**
- * Provides configuration for Zend components.
+ * Provides configuration for the module.
  *
  * @package Indigo\View
  * @author  Danijel Fabijan <hipnaba@gmail.com>

@@ -5,7 +5,7 @@ use Zend\View\Helper\AbstractHelper as BaseAbstractHelper;
 use Zend\View\Renderer\RendererInterface;
 
 /**
- * Base Helper plugin class.
+ * Base helper plugin class.
  *
  * @package Indigo\View\Helper
  * @author  Danijel Fabijan <hipnaba@gmail.com>

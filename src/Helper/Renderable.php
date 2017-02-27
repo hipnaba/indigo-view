@@ -17,7 +17,7 @@ use Indigo\View\RenderableProxyInterface;
 class Renderable extends AbstractHelper
 {
     /**
-     * Renders the object
+     * Returns the helper or proxies to render().
      *
      * @param RenderableInterface $object Object to render.
      *

@@ -2,7 +2,7 @@
 namespace Indigo\View;
 
 /**
- * This interface only provides documentation for phpstorm's autocomplete.
+ * This interface only provides documentation for IDEs.
  *
  * @package Indigo\View
  * @author  Danijel Fabijan <hipnaba@gmail.com>
