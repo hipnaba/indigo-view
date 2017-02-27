@@ -3,7 +3,9 @@ namespace IndigoTest\View\Renderer;
 
 use Indigo\View\Renderer\PhpRenderer;
 use PHPUnit\Framework\TestCase;
+use Zend\ServiceManager\ServiceManager;
 use Zend\View\Helper\HelperInterface;
+use Zend\View\HelperPluginManager;
 
 /**
  * PhpRenderer tests.
@@ -24,5 +26,20 @@ class PhpRendererTest extends TestCase
         $renderer = new PhpRenderer();
 
         $this->assertInstanceOf(HelperInterface::class, $renderer->plugin('renderable'));
+    }
+
+    /**
+     * Renderer will allow other plugin managers to be set.
+     *
+     * @return void
+     */
+    public function testPluginManagerWillNotBeOverwritterByDefault()
+    {
+        $renderer = new PhpRenderer();
+        $manager = new HelperPluginManager(new ServiceManager());
+
+        $renderer->setHelperPluginManager($manager);
+
+        $this->assertSame($manager, $renderer->getHelperPluginManager());
     }
 }

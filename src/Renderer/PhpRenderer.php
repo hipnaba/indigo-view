@@ -32,6 +32,19 @@ class PhpRenderer extends BasePhpRenderer
 
             $this->setHelperPluginManager($this->__helpers);
         }
-        return parent::getHelperPluginManager();
+        return $this->__helpers;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @param string|HelperPluginManager $helpers The new plugin manager.
+     *
+     * @return void
+     */
+    public function setHelperPluginManager($helpers)
+    {
+        parent::setHelperPluginManager($helpers);
+        $this->__helpers = $helpers;
     }
 }
