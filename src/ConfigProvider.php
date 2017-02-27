@@ -21,9 +21,11 @@ class ConfigProvider
     {
         return [
             'aliases' => [
+                'indent' => Helper\Indent::class,
                 'renderable' => Helper\Renderable::class,
             ],
             'factories' => [
+                Helper\Indent::class => InvokableFactory::class,
                 Helper\Renderable::class => InvokableFactory::class,
             ],
         ];

@@ -27,6 +27,7 @@ class PhpRendererTest extends TestCase
         $renderer = new PhpRenderer();
 
         $this->assertInstanceOf(HelperInterface::class, $renderer->plugin('renderable'));
+        $this->assertInstanceOf(HelperInterface::class, $renderer->plugin('indent'));
     }
 
     /**
