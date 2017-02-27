@@ -16,11 +16,12 @@ abstract class AbstractHelper extends BaseAbstractHelper
     /**
      * Fetches a helper plugin from the renderer.
      *
-     * @param string $plugin The plugin's name.
+     * @param string     $plugin  The plugin's name.
+     * @param array|null $options Plugin options.
      *
      * @return callable
      */
-    protected function getHelperPlugin($plugin)
+    protected function getHelperPlugin($plugin, array $options = null)
     {
         if (is_callable($plugin)) {
             return $plugin;
@@ -46,6 +47,6 @@ abstract class AbstractHelper extends BaseAbstractHelper
             ));
         }
 
-        return $renderer->plugin($plugin);
+        return $renderer->plugin($plugin, $options);
     }
 }

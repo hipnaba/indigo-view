@@ -3,6 +3,7 @@ namespace IndigoTest\View\Helper;
 
 use IndigoTest\View\Mock\ConcreteHelper;
 use PHPUnit\Framework\TestCase;
+use Zend\ServiceManager\Factory\InvokableFactory;
 use Zend\View\Helper\HeadLink;
 use Zend\View\Renderer\JsonRenderer;
 use Zend\View\Renderer\PhpRenderer;
@@ -28,7 +29,7 @@ class AbstractHelperTest extends TestCase
         $plugin = function () {
         };
 
-        $result = $helper->getHelperPlugin($plugin);
+        $result = $helper->protectedGetHelperPlugin($plugin);
 
         $this->assertSame($plugin, $result);
     }
@@ -43,7 +44,7 @@ class AbstractHelperTest extends TestCase
     public function testGetHelperPluginWillThrowExceptionForInvalidPluginName()
     {
         $helper = new ConcreteHelper();
-        $helper->getHelperPlugin([]);
+        $helper->protectedGetHelperPlugin([]);
     }
 
     /**
@@ -56,7 +57,7 @@ class AbstractHelperTest extends TestCase
     public function testGetHelperPluginWillThrowExceptionIfRendererNotSet()
     {
         $helper = new ConcreteHelper();
-        $helper->getHelperPlugin('some');
+        $helper->protectedGetHelperPlugin('some');
     }
 
     /**
@@ -71,7 +72,7 @@ class AbstractHelperTest extends TestCase
         $helper = new ConcreteHelper();
         $helper->setView(new JsonRenderer());
 
-        $helper->getHelperPlugin('some');
+        $helper->protectedGetHelperPlugin('some');
     }
 
     /**
@@ -84,8 +85,29 @@ class AbstractHelperTest extends TestCase
         $helper = new ConcreteHelper();
         $helper->setView(new PhpRenderer());
 
-        $headLink = $helper->getHelperPlugin('headLink');
+        $headLink = $helper->protectedGetHelperPlugin('headLink');
 
         $this->assertInstanceOf(HeadLink::class, $headLink);
+    }
+
+    /**
+     * GetHelperPlugin should pass options to helpers.
+     *
+     * @return void
+     */
+    public function testGetHelperWillPassOptionsToHelperPlugins()
+    {
+        $renderer = new PhpRenderer();
+        $helperManager = $renderer->getHelperPluginManager();
+        $helperManager->setFactory(ConcreteHelper::class, InvokableFactory::class);
+
+        $helper = new ConcreteHelper();
+        $helper->setView($renderer);
+
+        $options = ['param' => 'value'];
+        $other = $helper->protectedGetHelperPlugin(ConcreteHelper::class, $options);
+
+        $this->assertEmpty($helper->getOptions());
+        $this->assertEquals($options, $other->getOptions());
     }
 }
