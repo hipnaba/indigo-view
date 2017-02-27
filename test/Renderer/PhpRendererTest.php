@@ -2,6 +2,7 @@
 namespace IndigoTest\View\Renderer;
 
 use Indigo\View\Renderer\PhpRenderer;
+use IndigoTest\View\Mock\RenderableObject;
 use PHPUnit\Framework\TestCase;
 use Zend\ServiceManager\ServiceManager;
 use Zend\View\Helper\HelperInterface;
@@ -41,5 +42,20 @@ class PhpRendererTest extends TestCase
         $renderer->setHelperPluginManager($manager);
 
         $this->assertSame($manager, $renderer->getHelperPluginManager());
+    }
+
+    /**
+     * Renderer can render objects implementing RenderableInterface.
+     *
+     * @return void
+     */
+    public function testRenderCanRenderRenderableObjects()
+    {
+        $renderer = new PhpRenderer();
+        $object = new RenderableObject(function () {
+            return 'rendered';
+        });
+
+        $this->assertEquals('rendered', $renderer->render($object));
     }
 }
