@@ -79,6 +79,4 @@ EOS;
 
         $this->assertEquals(3, $helper->getWidth());
     }
-
-
 }
