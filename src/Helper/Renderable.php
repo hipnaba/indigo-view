@@ -1,7 +1,6 @@
 <?php
 namespace Indigo\View\Helper;
 
-use Indigo\View\Exception;
 use Indigo\View\RenderableInterface;
 use Indigo\View\RenderableProxyInterface;
 
@@ -42,38 +41,12 @@ class Renderable extends AbstractHelper
      */
     public function render(RenderableInterface $object)
     {
-        $helperPlugin = $this->getHelperPlugin($object);
+        $plugin = $this->getHelperPlugin($object->getHelperPlugin());
 
         if ($object instanceof RenderableProxyInterface) {
             $object = $object->getObjectToRender();
         }
 
-        return $helperPlugin($object);
-    }
-
-    /**
-     * Returns the view helper plugin used to render the given object.
-     *
-     * @param RenderableInterface $object The object.
-     *
-     * @return callable
-     */
-    protected function getHelperPlugin(RenderableInterface $object)
-    {
-        $plugin = $object->getHelperPlugin();
-
-        if (is_string($plugin)) {
-            $plugin = $this->getView()->plugin($plugin);
-        }
-
-        if (!is_callable($plugin)) {
-            throw new Exception\InvalidHelperPluginException(sprintf(
-                "%s: Invalid helper plugin '%s'. It's not callable",
-                __METHOD__,
-                is_object($plugin) ? get_class($plugin) : gettype($plugin)
-            ));
-        }
-
-        return $plugin;
+        return $plugin($object);
     }
 }

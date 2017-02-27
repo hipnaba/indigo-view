@@ -22,6 +22,17 @@ abstract class AbstractHelper extends BaseAbstractHelper
      */
     protected function getHelperPlugin($plugin)
     {
+        if (is_callable($plugin)) {
+            return $plugin;
+        }
+
+        if (!is_string($plugin)) {
+            throw new \InvalidArgumentException(sprintf(
+                "Plugin name must be a string, %s provided",
+                is_object($plugin) ? get_class($plugin) : gettype($plugin)
+            ));
+        }
+
         $renderer = $this->getView();
 
         if (!$renderer instanceof RendererInterface) {

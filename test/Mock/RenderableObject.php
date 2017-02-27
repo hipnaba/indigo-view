@@ -1,30 +1,31 @@
 <?php
-namespace IndigoTest\View\Helper\Mock;
+namespace IndigoTest\View\Mock;
 
-use Indigo\View\RenderableProxyInterface;
+use Indigo\View\RenderableInterface;
 
 /**
- * Class RenderableProxy
+ * Renderable mock implementation.
  *
  * @package IndigoTest\View\Helper\Mock
  * @author  Danijel Fabijan <danijel.fabijan@bruckom.hr>
  * @link    https://github.com/hipnaba/indigo-view
  */
-class RenderableProxy implements RenderableProxyInterface
+class RenderableObject implements RenderableInterface
 {
-    protected $object;
-
+    /**
+     * The helper plugin name.
+     *
+     * @var mixed
+     */
     protected $helper;
 
     /**
-     * RenderableProxy constructor.
+     * RenderableObject constructor.
      *
-     * @param mixed $object Object to render.
-     * @param mixed $helper Helper to use.
+     * @param mixed $helper The helper plugin used to render this object.
      */
-    public function __construct($object, $helper)
+    public function __construct($helper = null)
     {
-        $this->object = $object;
         $this->helper = $helper;
     }
 
@@ -38,16 +39,11 @@ class RenderableProxy implements RenderableProxyInterface
      */
     public function getHelperPlugin()
     {
+        if (null === $this->helper) {
+            $this->helper = function ($object) {
+                return get_class($object);
+            };
+        }
         return $this->helper;
-    }
-
-    /**
-     * Returns the object for rendering.
-     *
-     * @return mixed
-     */
-    public function getObjectToRender()
-    {
-        return $this->object;
     }
 }

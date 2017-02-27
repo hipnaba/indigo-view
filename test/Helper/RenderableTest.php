@@ -2,6 +2,7 @@
 namespace IndigoTest\View\Helper;
 
 use Indigo\View\Helper\Renderable;
+use IndigoTest\View\Mock;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use Zend\View\Renderer\PhpRenderer;
@@ -28,21 +29,6 @@ class RenderableTest extends TestCase
 
         $this->assertSame($helper, $helper());
         $this->assertTrue(is_string($helper($object)));
-    }
-
-    /**
-     * The helper will throw exceptions for invalid helper plugins.
-     *
-     * @expectedException \Indigo\View\Exception\InvalidHelperPluginException
-     *
-     * @return void
-     */
-    public function testThrowsExceptionsForInvalidHelperPlugins()
-    {
-        $helper = new Renderable();
-        $object = new Mock\RenderableObject([]);
-
-        $helper->render($object);
     }
 
     /**
