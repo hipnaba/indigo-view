@@ -39,6 +39,7 @@ class PhpRenderer extends BasePhpRenderer
 
             $this->setHelperPluginManager($this->__helpers);
         }
+
         return $this->__helpers;
     }
 
@@ -52,6 +53,7 @@ class PhpRenderer extends BasePhpRenderer
     public function setHelperPluginManager($helpers)
     {
         parent::setHelperPluginManager($helpers);
+
         $this->__helpers = $helpers;
     }
 
@@ -73,6 +75,7 @@ class PhpRenderer extends BasePhpRenderer
              * @var callable $renderableHelper
              */
             $renderableHelper = $this->plugin('renderable', $values ?: []);
+
             return $renderableHelper($nameOrModel);
         }
 
