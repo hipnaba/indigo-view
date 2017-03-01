@@ -3,7 +3,6 @@ namespace IndigoTest\View\Helper;
 
 use Indigo\View\Helper\RenderObject;
 use Indigo\View\HelperPluginAwareInterface;
-use Indigo\View\ObjectProxyInterface;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use stdClass;
@@ -60,29 +59,5 @@ class RenderableTest extends TestCase
             ->willReturn('string');
 
         $this->assertEquals('my-helper', $helper($object));
-    }
-
-    /**
-     * The helper should render the correct object for RenderableProxy
-     *
-     * @return void
-     */
-    public function testCorrectlyRendersRenderableProxyObjects()
-    {
-        $proxy = $this->createMock(ObjectProxyInterface::class);
-        $proxy
-            ->method('getProxiedObject')
-            ->willReturn((object) [
-                'prop' => 'value',
-            ]);
-        $proxy
-            ->method('getHelperPlugin')
-            ->willReturn(function ($object) {
-                return $object->prop;
-            });
-
-        $helper = new RenderObject();
-
-        $this->assertEquals('value', $helper($proxy));
     }
 }

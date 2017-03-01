@@ -1,9 +1,9 @@
 <?php
 namespace IndigoTest\View\Helper;
 
-use IndigoTest\View\Mock\ConcreteHelper;
+use Indigo\View\Helper\AbstractHelper;
 use PHPUnit\Framework\TestCase;
-use Zend\ServiceManager\Factory\InvokableFactory;
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use Zend\View\Helper\HeadLink;
 use Zend\View\Renderer\JsonRenderer;
 use Zend\View\Renderer\RendererInterface;
@@ -18,13 +18,36 @@ use Zend\View\Renderer\RendererInterface;
 class AbstractHelperTest extends TestCase
 {
     /**
-     * Helpers will always have a renderer instance.
+     * Calls a protected object method.
+     *
+     * @param object $object The object.
+     * @param string $method The method name.
+     * @param array  $args   The method arguments.
+     *
+     * @return mixed
+     */
+    protected function callProtectedMethod($object, $method, array $args = [])
+    {
+        $class = new \ReflectionClass($object);
+        $method = $class->getMethod($method);
+        $method->setAccessible(true);
+
+        return $method->invokeArgs($object, $args);
+    }
+
+    /**
+     * Helpers will have a default pluggable renderer.
      *
      * @return void
      */
     public function testHelpersHaveDefaultRenderer()
     {
-        $helper = new ConcreteHelper();
+        /**
+         * Helper under test.
+         *
+         * @var AbstractHelper|MockObject $helper
+         */
+        $helper = $this->getMockForAbstractClass(AbstractHelper::class);
         $renderer = $helper->getView();
 
         $this->assertNotNull($renderer);
@@ -39,11 +62,16 @@ class AbstractHelperTest extends TestCase
      */
     public function testGetHelperPluginWillReturnHelperIfAlreadyCallable()
     {
-        $helper = new ConcreteHelper();
+        /**
+         * Helper under test.
+         *
+         * @var AbstractHelper|MockObject $helper
+         */
+        $helper = $this->getMockForAbstractClass(AbstractHelper::class);
         $plugin = function () {
         };
 
-        $result = $helper->protectedGetHelperPlugin($plugin);
+        $result = $this->callProtectedMethod($helper, 'getHelperPlugin', [$plugin]);
 
         $this->assertSame($plugin, $result);
     }
@@ -57,8 +85,15 @@ class AbstractHelperTest extends TestCase
      */
     public function testGetHelperPluginWillThrowExceptionForInvalidPluginName()
     {
-        $helper = new ConcreteHelper();
-        $helper->protectedGetHelperPlugin([]);
+        /**
+         * Helper under test.
+         *
+         * @var AbstractHelper|MockObject $helper
+         */
+        $helper = $this->getMockForAbstractClass(AbstractHelper::class);
+        $plugin = [];
+
+        $this->callProtectedMethod($helper, 'getHelperPlugin', [$plugin]);
     }
 
     /**
@@ -70,10 +105,15 @@ class AbstractHelperTest extends TestCase
      */
     public function testGetHelperPluginWillThrowExceptionIfRendererNotPluggable()
     {
-        $helper = new ConcreteHelper();
+        /**
+         * Helper under test.
+         *
+         * @var AbstractHelper|MockObject $helper
+         */
+        $helper = $this->getMockForAbstractClass(AbstractHelper::class);
         $helper->setView(new JsonRenderer());
 
-        $helper->protectedGetHelperPlugin('some');
+        $this->callProtectedMethod($helper, 'getHelperPlugin', ['name']);
     }
 
     /**
@@ -83,28 +123,15 @@ class AbstractHelperTest extends TestCase
      */
     public function testGetHelperPluginWillReturnPlugins()
     {
-        $helper = new ConcreteHelper();
-        $headLink = $helper->protectedGetHelperPlugin('headLink');
+        /**
+         * Helper under test.
+         *
+         * @var AbstractHelper|MockObject $helper
+         */
+        $helper = $this->getMockForAbstractClass(AbstractHelper::class);
+
+        $headLink = $this->callProtectedMethod($helper, 'getHelperPlugin', ['headLink']);
 
         $this->assertInstanceOf(HeadLink::class, $headLink);
-    }
-
-    /**
-     * GetHelperPlugin should pass options to helpers.
-     *
-     * @return void
-     */
-    public function testGetHelperWillPassOptionsToHelperPlugins()
-    {
-        $helper = new ConcreteHelper();
-
-        $helperManager = $helper->getView()->getHelperPluginManager();
-        $helperManager->setFactory(ConcreteHelper::class, InvokableFactory::class);
-
-        $options = ['param' => 'value'];
-        $other = $helper->protectedGetHelperPlugin(ConcreteHelper::class, $options);
-
-        $this->assertEmpty($helper->getOptions());
-        $this->assertEquals($options, $other->getOptions());
     }
 }

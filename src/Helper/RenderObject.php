@@ -3,7 +3,6 @@ namespace Indigo\View\Helper;
 
 use Indigo\View\Exception;
 use Indigo\View\HelperPluginAwareInterface;
-use Indigo\View\ObjectProxyInterface;
 
 /**
  * Tries to render an object.
@@ -51,16 +50,7 @@ class RenderObject extends AbstractHelper
 
         $plugin = false;
 
-        if ($object instanceof ObjectProxyInterface) {
-            // Allow proxies to overrid the view helper of the object.
-            if ($object instanceof HelperPluginAwareInterface) {
-                $plugin = $this->getHelperPlugin($object->getHelperPlugin());
-            }
-
-            $object = $object->getProxiedObject();
-        }
-
-        if (!is_callable($plugin) && $object instanceof HelperPluginAwareInterface) {
+        if ($object instanceof HelperPluginAwareInterface) {
             $plugin = $this->getHelperPlugin($object->getHelperPlugin());
         }
 
