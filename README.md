@@ -8,9 +8,9 @@ Indigo View extends [Zend View](https://docs.zendframework.com/zend-view/).
 It simplifies integrations with non ZF projects and provides a set of
 generally useful view helpers.
 
-## Renderable
+## HelperPluginAware
 
-Any object can implement [RenderableInterface](src/RenderableInterface.php) and
+Any object can implement [HelperPluginAwareInterface](src/HelperPluginAwareInterface.php) and
 be rendered by the view helper plugin defined by the object itself. A helper
 plugin is provided to render such objects.
 
@@ -18,7 +18,7 @@ The helper plugin can be any callable.
 
 ```php
 <?php
-class RenderableObject implements \Indigo\View\RenderableInterface
+class RenderableObject implements \Indigo\View\HelperPluginAwareInterface
 {
     public function getHelperPlugin()
      {
@@ -30,7 +30,7 @@ class RenderableObject implements \Indigo\View\RenderableInterface
 
 $object = new RenderableObject();
 
-echo $this->renderable($object);
+echo $this->renderObject($object);
 ```
 
 The above example will output
@@ -43,7 +43,7 @@ Or we can use the plugin name registered with the plugin manager.
 
 ```php
 <?php
-class RenderableObject implements \Indigo\View\RenderableInterface
+class RenderableObject implements \Indigo\View\HelperPluginAwareInterface
 {
     public function getHelperPlugin() 
     {

@@ -11,12 +11,12 @@ namespace Indigo\View;
  * @author  Danijel Fabijan <hipnaba@gmail.com>
  * @link    https://github.com/hipnaba/indigo-view
  */
-interface RenderableProxyInterface extends RenderableInterface
+interface ObjectProxyInterface extends HelperPluginAwareInterface
 {
     /**
      * Returns the object to render.
      *
      * @return mixed
      */
-    public function getObjectToRender();
+    public function getProxiedObject();
 }

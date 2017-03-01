@@ -9,7 +9,7 @@ namespace Indigo\View;
  * @link    https://github.com/hipnaba/indigo-view
  *
  * @method string|Helper\Indent indent($string = null, $level = 1)
- * @method string|Helper\Renderable renderable(RenderableInterface $object)
+ * @method string|Helper\RenderObject renderObject($object)
  */
 interface ViewHelpers
 {

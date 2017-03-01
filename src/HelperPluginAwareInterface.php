@@ -10,7 +10,7 @@ use Zend\View\Helper\HelperInterface;
  * @author  Danijel Fabijan <hipnaba@gmail.com>
  * @link    https://github.com/hipnaba/indigo-view
  */
-interface RenderableInterface
+interface HelperPluginAwareInterface
 {
     /**
      * Returns the helper plugin used to render this object.

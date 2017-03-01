@@ -1,8 +1,8 @@
 <?php
 namespace Indigo\View\Helper;
 
-use Indigo\View\Renderer\PhpRenderer;
 use Zend\View\Helper\AbstractHelper as BaseAbstractHelper;
+use Zend\View\Renderer\PhpRenderer;
 use Zend\View\Renderer\RendererInterface;
 
 /**
