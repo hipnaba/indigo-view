@@ -1,6 +1,7 @@
 <?php
 namespace IndigoTest\View\Helper;
 
+use Indigo\Test\TestUtilsTrait;
 use Indigo\View\Helper\AbstractHelper;
 use Indigo\View\Helper\Indent;
 use Indigo\View\Helper\RenderObject;
@@ -18,23 +19,7 @@ use Zend\View\Renderer\RendererInterface;
  */
 class AbstractHelperTest extends TestCase
 {
-    /**
-     * Calls a protected object method.
-     *
-     * @param object $object The object.
-     * @param string $method The method name.
-     * @param array  $args   The method arguments.
-     *
-     * @return mixed
-     */
-    protected function callProtectedMethod($object, $method, array $args = [])
-    {
-        $class = new \ReflectionClass($object);
-        $method = $class->getMethod($method);
-        $method->setAccessible(true);
-
-        return $method->invokeArgs($object, $args);
-    }
+    use TestUtilsTrait;
 
     /**
      * The helper should provide default helpers.
