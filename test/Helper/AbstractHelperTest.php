@@ -2,10 +2,9 @@
 namespace IndigoTest\View\Helper;
 
 use Indigo\View\Helper\AbstractHelper;
+use Indigo\View\Helper\Indent;
+use Indigo\View\Helper\RenderObject;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use Zend\View\Renderer\JsonRenderer;
-use Zend\View\Renderer\PhpRenderer;
 
 /**
  * AbstractHelper tests.
@@ -35,92 +34,18 @@ class AbstractHelperTest extends TestCase
     }
 
     /**
-     * GetHelperPlugin should return the helper if it's already callable
+     * The helper should provide default helpers.
      *
      * @return void
      */
-    public function testGetHelperPluginWillReturnHelperIfAlreadyCallable()
+    public function testHelperProvidesDefaultHelpers()
     {
-        /**
-         * Helper under test.
-         *
-         * @var AbstractHelper|MockObject $helper
-         */
         $helper = $this->getMockForAbstractClass(AbstractHelper::class);
-        $plugin = function () {
-        };
 
-        $result = $this->callProtectedMethod($helper, 'getHelperPlugin', [$plugin]);
+        $indent = $this->callProtectedMethod($helper, 'getIndentHelper');
+        $this->assertInstanceOf(Indent::class, $indent);
 
-        $this->assertSame($plugin, $result);
-    }
-
-    /**
-     * Other than callables getHelperPlugin will accept only strings.
-     *
-     * @return void
-     *
-     * @expectedException \InvalidArgumentException
-     */
-    public function testGetHelperPluginWillThrowExceptionForInvalidPluginName()
-    {
-        /**
-         * Helper under test.
-         *
-         * @var AbstractHelper|MockObject $helper
-         */
-        $helper = $this->getMockForAbstractClass(AbstractHelper::class);
-        $plugin = [];
-
-        $this->callProtectedMethod($helper, 'getHelperPlugin', [$plugin]);
-    }
-
-    /**
-     * GetHelperPlugin will throw an exception if the renderer is not pluggable.
-     *
-     * @return void
-     *
-     * @expectedException \RuntimeException
-     */
-    public function testGetHelperPluginWillThrowExceptionIfRendererNotPluggable()
-    {
-        /**
-         * Helper under test.
-         *
-         * @var AbstractHelper|MockObject $helper
-         */
-        $helper = $this->getMockForAbstractClass(AbstractHelper::class);
-        $helper->setView(new JsonRenderer());
-
-        $this->callProtectedMethod($helper, 'getHelperPlugin', ['name']);
-    }
-
-    /**
-     * GetHelperPlugin will actually fetch helpers from the renderer.
-     *
-     * @return void
-     */
-    public function testGetHelperPluginWillGetPluginsFromTheRenderer()
-    {
-        /**
-         * Renderer.
-         *
-         * @var PhpRenderer|MockObject $renderer
-         */
-        $renderer = $this->createMock(PhpRenderer::class);
-        $renderer
-            ->expects($this->once())
-            ->method('plugin')
-            ->with('headLink');
-
-        /**
-         * Helper under test.
-         *
-         * @var AbstractHelper|MockObject $helper
-         */
-        $helper = $this->getMockForAbstractClass(AbstractHelper::class);
-        $helper->setView($renderer);
-
-        $this->callProtectedMethod($helper, 'getHelperPlugin', ['headLink']);
+        $renderObject = $this->callProtectedMethod($helper, 'getRenderObjectHelper');
+        $this->assertInstanceOf(RenderObject::class, $renderObject);
     }
 }

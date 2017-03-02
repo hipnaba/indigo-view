@@ -51,7 +51,19 @@ class RenderObject extends AbstractHelper
         $plugin = false;
 
         if ($object instanceof HelperPluginAwareInterface) {
-            $plugin = $this->getHelperPlugin($object->getHelperPlugin());
+            $pluginName = $object->getHelperPlugin();
+
+            if ('renderObject' !== $pluginName) {
+                if (!$this->view) {
+                    throw new \RuntimeException("Renderer not set. Can't fetch helper plugins.");
+                }
+
+                if (!method_exists($this->view, 'plugin')) {
+                    throw new \RuntimeException('The renderer is not pluggable.');
+                }
+
+                $plugin = $this->view->plugin($pluginName);
+            }
         }
 
         if (!is_callable($plugin) &&  method_exists($object, '__toString')) {

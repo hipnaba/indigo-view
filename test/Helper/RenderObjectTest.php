@@ -16,7 +16,7 @@ use Zend\View\Renderer\RendererInterface;
  * @author  Danijel Fabijan <danijel.fabijan@bruckom.hr>
  * @link    https://github.com/hipnaba/indigo-view
  */
-class RenderableTest extends TestCase
+class RenderObjectTest extends TestCase
 {
     /**
      * Invokable interface returns the correct values.
@@ -59,5 +59,24 @@ class RenderableTest extends TestCase
             ->willReturn('string');
 
         $this->assertEquals('my-helper', $helper($object));
+    }
+
+    /**
+     * The plugin shouldn't die when the object has 'renderObject' set as helper.
+     *
+     * @return void
+     */
+    public function testRenderObjectAsHelperPlugin()
+    {
+        $object = $this->createMock(HelperPluginAwareInterface::class);
+        $object
+            ->method('getHelperPlugin')
+            ->willReturn('renderObject');
+
+        $helper = new RenderObject();
+
+        $rendered = $helper($object);
+
+        $this->assertTrue(is_string($rendered));
     }
 }

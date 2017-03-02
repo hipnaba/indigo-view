@@ -13,35 +13,50 @@ use Zend\View\Helper\AbstractHelper as BaseAbstractHelper;
 abstract class AbstractHelper extends BaseAbstractHelper
 {
     /**
-     * Fetches a helper plugin from the renderer.
+     * Indent view helper.
      *
-     * @param string     $plugin  The plugin's name.
-     * @param array|null $options Plugin options.
-     *
-     * @return callable
+     * @var Indent
      */
-    protected function getHelperPlugin($plugin, array $options = null)
+    protected $indent;
+
+    /**
+     * RenderObject view helper.
+     *
+     * @var RenderObject
+     */
+    protected $renderObject;
+
+    /**
+     * Returns the Indent view helper.
+     *
+     * @return Indent
+     */
+    protected function getIndentHelper()
     {
-        if (is_callable($plugin)) {
-            return $plugin;
+        if (null === $this->indent) {
+            if (method_exists($this->view, 'plugin')) {
+                $this->indent = $this->view->plugin('indent');
+            } else {
+                $this->indent = new Indent();
+            }
         }
+        return $this->indent;
+    }
 
-        if (!is_string($plugin)) {
-            throw new \InvalidArgumentException(sprintf(
-                "Plugin name must be a string, %s provided",
-                is_object($plugin) ? get_class($plugin) : gettype($plugin)
-            ));
+    /**
+     * Returns the RenderObject helper.
+     *
+     * @return RenderObject
+     */
+    protected function getRenderObjectHelper()
+    {
+        if (null === $this->renderObject) {
+            if (method_exists($this->view, 'plugin')) {
+                $this->renderObject = $this->view->plugin('renderObject');
+            } else {
+                $this->renderObject = new RenderObject();
+            }
         }
-
-        $renderer = $this->getView();
-
-        if (!method_exists($renderer, 'plugin')) {
-            throw new \RuntimeException(sprintf(
-                "The renderer '%s' isn't pluggable.",
-                get_class($renderer)
-            ));
-        }
-
-        return $renderer->plugin($plugin, $options);
+        return $this->renderObject;
     }
 }
