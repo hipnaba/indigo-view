@@ -55,7 +55,7 @@ class Indent extends AbstractHelper
      *
      * @return int
      */
-    public function getWidth(): int
+    public function getWidth()
     {
         return $this->width;
     }
@@ -67,7 +67,7 @@ class Indent extends AbstractHelper
      *
      * @return void
      */
-    public function setWidth(int $width)
+    public function setWidth($width)
     {
         $this->width = $width;
     }
