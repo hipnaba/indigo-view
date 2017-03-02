@@ -79,4 +79,37 @@ EOS;
 
         $this->assertEquals(3, $helper->getWidth());
     }
+
+    /**
+     * The example in the docs works as expected.
+     *
+     * @return void
+     */
+    public function testExampleWorksAsExpected()
+    {
+        $content = <<< EOS
+Line 1
+EOS;
+
+        $content1 = <<< EOS
+Line 1.1
+Line 1.2
+EOS;
+
+        $indent = new Indent();
+
+        $rendered = '<div>' . PHP_EOL
+            . ($indent($content)) . PHP_EOL
+            . ($indent($content1, 2)) . PHP_EOL
+            . '</div>';
+
+        $expected = <<< EOS
+<div>
+    Line 1
+        Line 1.1
+        Line 1.2
+</div>
+EOS;
+        $this->assertEquals($expected, $rendered);
+    }
 }
