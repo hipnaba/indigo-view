@@ -34,12 +34,11 @@ abstract class AbstractHelper extends BaseAbstractHelper
     protected function getIndentHelper()
     {
         if (null === $this->indent) {
-            if (method_exists($this->view, 'plugin')) {
-                $this->indent = $this->view->plugin('indent');
-            } else {
-                $this->indent = new Indent();
-            }
+            $this->indent = method_exists($this->view, 'plugin')
+                ? $this->view->plugin('indent')
+                : new Indent();
         }
+
         return $this->indent;
     }
 
@@ -51,11 +50,9 @@ abstract class AbstractHelper extends BaseAbstractHelper
     protected function getRenderObjectHelper()
     {
         if (null === $this->renderObject) {
-            if (method_exists($this->view, 'plugin')) {
-                $this->renderObject = $this->view->plugin('renderObject');
-            } else {
-                $this->renderObject = new RenderObject();
-            }
+            $this->renderObject = method_exists($this->view, 'plugin')
+                ? $this->view->plugin('renderObject')
+                : new RenderObject();
         }
         return $this->renderObject;
     }
