@@ -84,9 +84,11 @@ class Indent extends AbstractHelper
     {
         $lines = explode(PHP_EOL, $string);
 
-        foreach ($lines as &$line) {
-            $line = str_repeat(' ', $this->getWidth() * $level) . $line;
-        }
+        array_walk($lines, function (&$line) use ($level) {
+            $line = strlen($line) > 0
+                ? str_repeat(' ', $this->getWidth() * $level) . $line
+                : $line;
+        });
 
         return implode(PHP_EOL, $lines);
     }
