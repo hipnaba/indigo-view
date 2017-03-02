@@ -4,9 +4,8 @@ namespace IndigoTest\View\Helper;
 use Indigo\View\Helper\AbstractHelper;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use Zend\View\Helper\HeadLink;
 use Zend\View\Renderer\JsonRenderer;
-use Zend\View\Renderer\RendererInterface;
+use Zend\View\Renderer\PhpRenderer;
 
 /**
  * AbstractHelper tests.
@@ -33,26 +32,6 @@ class AbstractHelperTest extends TestCase
         $method->setAccessible(true);
 
         return $method->invokeArgs($object, $args);
-    }
-
-    /**
-     * Helpers will have a default pluggable renderer.
-     *
-     * @return void
-     */
-    public function testHelpersHaveDefaultRenderer()
-    {
-        /**
-         * Helper under test.
-         *
-         * @var AbstractHelper|MockObject $helper
-         */
-        $helper = $this->getMockForAbstractClass(AbstractHelper::class);
-        $renderer = $helper->getView();
-
-        $this->assertNotNull($renderer);
-        $this->assertInstanceOf(RendererInterface::class, $renderer);
-        $this->assertTrue(method_exists($renderer, 'plugin'), 'The default renderer must be pluggable.');
     }
 
     /**
@@ -117,21 +96,31 @@ class AbstractHelperTest extends TestCase
     }
 
     /**
-     * GetHelperPlugin will actually return helpers from the renderer.
+     * GetHelperPlugin will actually fetch helpers from the renderer.
      *
      * @return void
      */
-    public function testGetHelperPluginWillReturnPlugins()
+    public function testGetHelperPluginWillGetPluginsFromTheRenderer()
     {
+        /**
+         * Renderer.
+         *
+         * @var PhpRenderer|MockObject $renderer
+         */
+        $renderer = $this->createMock(PhpRenderer::class);
+        $renderer
+            ->expects($this->once())
+            ->method('plugin')
+            ->with('headLink');
+
         /**
          * Helper under test.
          *
          * @var AbstractHelper|MockObject $helper
          */
         $helper = $this->getMockForAbstractClass(AbstractHelper::class);
+        $helper->setView($renderer);
 
-        $headLink = $this->callProtectedMethod($helper, 'getHelperPlugin', ['headLink']);
-
-        $this->assertInstanceOf(HeadLink::class, $headLink);
+        $this->callProtectedMethod($helper, 'getHelperPlugin', ['headLink']);
     }
 }

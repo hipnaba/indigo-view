@@ -2,8 +2,6 @@
 namespace Indigo\View\Helper;
 
 use Zend\View\Helper\AbstractHelper as BaseAbstractHelper;
-use Zend\View\Renderer\PhpRenderer;
-use Zend\View\Renderer\RendererInterface;
 
 /**
  * Base helper plugin class.
@@ -14,19 +12,6 @@ use Zend\View\Renderer\RendererInterface;
  */
 abstract class AbstractHelper extends BaseAbstractHelper
 {
-    /**
-     * {@inheritdoc}
-     *
-     * @return RendererInterface|PhpRenderer
-     */
-    public function getView()
-    {
-        if (null === $this->view) {
-            $this->setView(new PhpRenderer());
-        }
-        return $this->view;
-    }
-
     /**
      * Fetches a helper plugin from the renderer.
      *
